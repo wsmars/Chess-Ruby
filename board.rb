@@ -10,7 +10,10 @@ class Board
     # self[[6,0]] = King.new(:white, [6,0], self)
     # self[[3,0]] = King.new(:black, [3,0], self)
     if fill
-      populate_grid
+      self[[0,0]] = Queen.new(:black, [0,0], self)
+      self[[6,0]] = King.new(:white, [6,0], self)
+      self[[3,0]] = Rook.new(:white, [3,0], self)
+      #populate_grid
     end
   end
 
@@ -69,6 +72,7 @@ class Board
   def move(start, end_pos)
     #re-write after implementing Display
     self[end_pos] = self[start]
+    self[end_pos].position = end_pos
     self[start] = Piece.new
   end
 
