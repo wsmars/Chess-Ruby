@@ -29,20 +29,28 @@ class Display
     elsif (i + j).odd?
       bg = :red
     else
-      bg = :black
+      bg = :blue
     end
-    { background: bg, color: :white }
+    { background: bg }
   end
 
   def render
     system("clear")
-    build_grid.each { |row| puts row.join }
+    row_index = 8
+    build_grid.each do |row|
+      puts row_index.to_s + ' ' + row.join
+      row_index -= 1
+    end
+    puts "   A    B   C   D   E   F   G   H"
     nil
   end
 end
 
-if __FILE__ != $PROGRAM_NAME
+if __FILE__ == $PROGRAM_NAME
   b = Board.new
   d = Display.new(b)
-  d.render
+  while true
+    d.render
+    d.get_input
+  end
 end

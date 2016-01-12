@@ -7,6 +7,10 @@ class Piece
     @board = board
   end
 
+  def dup(new_board = nil)
+    self.class.new(color = @color, position = @position, board = new_board)
+  end
+
   def to_s
     '    '
   end

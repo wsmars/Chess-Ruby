@@ -12,10 +12,10 @@ class Pawn < Piece
   end
 
   def to_s
-    return ' ♙  ' if color == :white
-    return ' ♟  '
+    return ' ♟  '.colorize(color: color)
   end
 
+  #refactor moves for the pawn
   def moves
     output = []
     move_one = false

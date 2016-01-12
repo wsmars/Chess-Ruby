@@ -9,7 +9,6 @@ class King < SteppingPiece
   end
 
   def to_s
-    return ' ♔  ' if color == :white
-    return ' ♚  '
+    return ' ♚  '.colorize(color: color)
   end
 end

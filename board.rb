@@ -4,9 +4,14 @@ require_relative 'pieces_helper'
 class Board
   attr_accessor :grid
 
-  def initialize
+  def initialize(fill = true)
     @grid = Array.new(8) { Array.new(8, Piece.new) }
-    populate_grid
+    # self[[0,0]] = Queen.new(:black, [0,0], self)
+    # self[[6,0]] = King.new(:white, [6,0], self)
+    # self[[3,0]] = King.new(:black, [3,0], self)
+    if fill
+      populate_grid
+    end
   end
 
   def populate_grid
@@ -36,10 +41,35 @@ class Board
     end
   end
 
+  def in_check?(color)
+    #find king
+    king_position = @grid.flatten.select {|king| king.is_a?(King) && king.color == color}[0].position
+
+    #loop through other color's pieces and see if king falls in their moves
+    other_color = color == :black ? :white : :black
+    all_pieces(other_color).any? do |piece|
+      piece.moves.include?(king_position)
+    end
+  end
+
+  def dup
+    new_board = Board.new(false)
+    new_board.grid.each_index do |row|
+      new_board.grid[row].each_index do |col|
+        new_board[[row,col]] = self[[row,col]].dup(new_board)
+      end
+    end
+    new_board
+  end
+
+  def all_pieces(color)
+    @grid.flatten.select {|piece| piece.color == color}
+  end
+
   def move(start, end_pos)
     #re-write after implementing Display
     self[end_pos] = self[start]
-    self[start] = nil
+    self[start] = Piece.new
   end
 
   def [](pos)
@@ -52,6 +82,10 @@ class Board
     row = pos[0]
     col = pos[1]
     @grid[row][col] = value
+  end
+
+  def in_bounds?(pos)
+    (0..7).include?(pos[0]) && (0..7).include?(pos[1])
   end
 
 end
