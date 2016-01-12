@@ -9,7 +9,7 @@ class Queen < SlidingPiece
   end
 
   def to_s
-    return '♕' if color == :white
-    return '♛'
+    return ' ♕  ' if color == :white
+    return ' ♛  '
   end
 end

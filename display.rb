@@ -25,11 +25,11 @@ class Display
 
   def colors_for(i, j)
     if [i, j] == @cursor_pos
-      bg = :light_red
-    elsif (i + j).odd?
-      bg = :light_blue
-    else
       bg = :green
+    elsif (i + j).odd?
+      bg = :red
+    else
+      bg = :black
     end
     { background: bg, color: :white }
   end
