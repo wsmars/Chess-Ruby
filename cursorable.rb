@@ -33,7 +33,11 @@ module Cursorable
 
   def get_input
     key = KEYMAP[read_char]
-    handle_key(key)
+    while !handle_key(key).is_a?(Array)
+      self.render
+      key = KEYMAP[read_char]
+    end
+    @cursor_pos
   end
 
   def handle_key(key)

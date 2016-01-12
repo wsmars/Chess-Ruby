@@ -10,7 +10,7 @@ class Piece
   def valid_move?(start_pos, end_pos)
     new_board = @board.dup
     color = new_board[start_pos].color
-    new_board.move(start_pos, end_pos)
+    new_board.move!(start_pos, end_pos)
     !new_board.in_check?(color)
   end
 

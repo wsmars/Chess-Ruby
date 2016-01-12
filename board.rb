@@ -10,10 +10,7 @@ class Board
     # self[[6,0]] = King.new(:white, [6,0], self)
     # self[[3,0]] = King.new(:black, [3,0], self)
     if fill
-      self[[0,0]] = Queen.new(:black, [0,0], self)
-      self[[6,0]] = King.new(:white, [6,0], self)
-      self[[3,0]] = Rook.new(:white, [3,0], self)
-      #populate_grid
+      populate_grid
     end
   end
 
@@ -55,6 +52,13 @@ class Board
     end
   end
 
+  def checkmate?(color)
+    return false unless in_check?(color)
+    all_pieces(color).all? do |piece|
+      piece.valid_moves.length == 0
+    end
+  end
+
   def dup
     new_board = Board.new(false)
     new_board.grid.each_index do |row|
@@ -69,8 +73,15 @@ class Board
     @grid.flatten.select {|piece| piece.color == color}
   end
 
-  def move(start, end_pos)
+  def move(start, end_pos, color)
     #re-write after implementing Display
+    raise "NilPieceError" if self[start].position.nil?
+    raise "WrongColorPieceError" unless self[start].color == color
+    raise "InvalidMoveError" unless self[start].valid_moves.include?(end_pos)
+    self.move!(start, end_pos)
+  end
+
+  def move!(start, end_pos)
     self[end_pos] = self[start]
     self[end_pos].position = end_pos
     self[start] = Piece.new
