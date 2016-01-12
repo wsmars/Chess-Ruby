@@ -5,9 +5,14 @@ require_relative "cursorable"
 class Display
   include Cursorable
 
+  attr_reader :board
+  attr_accessor :selected, :selected_position, :possible_moves
+
   def initialize(board)
     @board = board
     @cursor_pos = [0, 0]
+    @selected = false
+    @selected_position = nil
   end
 
   def build_grid
@@ -23,9 +28,21 @@ class Display
     end
   end
 
+  def calculate_possible_moves!
+    if selected
+      @possible_moves = @board[selected_position].valid_moves
+    else
+      @possible_moves = []
+    end
+  end
+
   def colors_for(i, j)
     if [i, j] == @cursor_pos
       bg = :green
+    elsif selected && selected_position == [i,j]
+      bg = :magenta
+    elsif @possible_moves.include?([i,j])
+      bg = :yellow
     elsif (i + j).odd?
       bg = :red
     else
@@ -35,6 +52,7 @@ class Display
   end
 
   def render
+    calculate_possible_moves!
     system("clear")
     row_index = 8
     build_grid.each do |row|

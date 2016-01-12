@@ -25,8 +25,4 @@ class Piece
   def to_s
     '    '
   end
-
-  def moves
-    raise "NoPieceError"
-  end
 end

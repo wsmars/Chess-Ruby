@@ -75,9 +75,9 @@ class Board
 
   def move(start, end_pos, color)
     #re-write after implementing Display
-    raise "NilPieceError" if self[start].position.nil?
-    raise "WrongColorPieceError" unless self[start].color == color
-    raise "InvalidMoveError" unless self[start].valid_moves.include?(end_pos)
+    raise "There's no piece there!" if self[start].position.nil?
+    raise "That's not your piece!" unless self[start].color == color
+    raise "That's not a valid move!" unless self[start].valid_moves.include?(end_pos)
     self.move!(start, end_pos)
   end
 

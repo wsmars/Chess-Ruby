@@ -23,20 +23,20 @@ class Pawn < Piece
     directions.each_index do |index|
       possible_position = [position[0] + directions[index][0],position[1] + directions[index][1]]
       if index.even?
-        unless out_of_bounds?(possible_position)
+        if board.in_bounds?(possible_position)
           if occupied?(possible_position)
             output << possible_position unless board[possible_position].color == board[position].color
           end
         end
       elsif index == 1
-        unless out_of_bounds?(possible_position)
+        if board.in_bounds?(possible_position)
           unless occupied?(possible_position)
             output << possible_position
             move_one = true
           end
         end
       else
-        unless out_of_bounds?(possible_position)
+        if board.in_bounds?(possible_position)
           unless occupied?(possible_position)
             output << possible_position if move_one
           end
@@ -44,12 +44,6 @@ class Pawn < Piece
       end
     end
     output
-  end
-
-  def out_of_bounds?(pos)
-    return true if pos[0] < 0 || pos[0] > 7
-    return true if pos[1] < 0 || pos[1] > 7
-    false
   end
 
   def occupied?(pos)
