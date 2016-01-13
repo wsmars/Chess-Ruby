@@ -17,7 +17,10 @@ class SlidingPiece < Piece
       possible_position = [position[0] + jump[0], position[1] + jump[1]]
       until out_of_bounds?(possible_position) || occupied?(possible_position)
         output << possible_position
-        possible_position = [possible_position[0] + jump[0], possible_position[1] + jump[1]]
+        possible_position = [
+          possible_position[0] + jump[0],
+          possible_position[1] + jump[1]
+        ]
       end
       unless out_of_bounds?(possible_position)
         output << possible_position unless board[possible_position].color == board[position].color
@@ -29,11 +32,6 @@ class SlidingPiece < Piece
   def out_of_bounds?(pos)
     return true if pos[0] < 0 || pos[0] > 7
     return true if pos[1] < 0 || pos[1] > 7
-    false
-  end
-
-  def occupied?(pos)
-    return true unless board[pos].color.nil?
     false
   end
 end

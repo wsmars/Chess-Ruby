@@ -6,9 +6,6 @@ class Board
 
   def initialize(fill = true)
     @grid = Array.new(8) { Array.new(8, Piece.new) }
-    # self[[0,0]] = Queen.new(:black, [0,0], self)
-    # self[[6,0]] = King.new(:white, [6,0], self)
-    # self[[3,0]] = King.new(:black, [3,0], self)
     if fill
       populate_grid
     end
@@ -21,22 +18,34 @@ class Board
 
       (0..7).to_a.each do |col|
         #pawn
-        self[[row, col]] = Pawn.new(color, [row, col], self) if [1,6].include?(row)
+        if [1,6].include?(row)
+          self[[row, col]] = Pawn.new(color, [row, col], self)
+        end
 
         #rook
-        self[[row, col]] = Rook.new(color, [row, col], self) if [[0,0],[0,7],[7,0],[7,7]].include?([row,col])
+        if [[0,0],[0,7],[7,0],[7,7]].include?([row,col])
+          self[[row, col]] = Rook.new(color, [row, col], self)
+        end
 
         #knight
-        self[[row, col]] = Knight.new(color, [row, col], self) if [[0,1],[0,6],[7,1],[7,6]].include?([row,col])
+        if [[0,1],[0,6],[7,1],[7,6]].include?([row,col])
+          self[[row, col]] = Knight.new(color, [row, col], self)
+        end
 
         #bishop
-        self[[row, col]] = Bishop.new(color, [row, col], self) if [[0,2],[0,5],[7,2],[7,5]].include?([row,col])
+        if [[0,2],[0,5],[7,2],[7,5]].include?([row,col])
+          self[[row, col]] = Bishop.new(color, [row, col], self)
+        end
 
         #queen
-        self[[row, col]] = Queen.new(color, [row, col], self) if [[0,3],[7,3]].include?([row,col])
+        if [[0,3],[7,3]].include?([row,col])
+          self[[row, col]] = Queen.new(color, [row, col], self)
+        end
 
         #king
-        self[[row, col]] = King.new(color, [row, col], self) if [[0,4],[7,4]].include?([row,col])
+        if [[0,4],[7,4]].include?([row,col])
+          self[[row, col]] = King.new(color, [row, col], self)
+        end
       end
     end
   end
@@ -82,9 +91,34 @@ class Board
   end
 
   def move!(start, end_pos)
-    self[end_pos] = self[start]
-    self[end_pos].position = end_pos
-    self[start] = Piece.new
+    if self[start].is_a?(King)
+      if (end_pos[1] - start[1]).abs >= 2
+        castle(start, end_pos)
+      else
+        self[end_pos] = self[start]
+        self[end_pos].position = end_pos
+        self[start] = Piece.new
+      end
+    else
+      self[end_pos] = self[start]
+      self[end_pos].position = end_pos
+      self[start] = Piece.new
+    end
+    self[end_pos].moved = true if self[end_pos].is_a?(King) || self[end_pos].is_a?(Rook)
+  end
+
+  def castle(start, end_pos)
+    if end_pos[1] - start[1] == -2
+      self[end_pos] = self[start]
+      self[[end_pos[0], end_pos[1]+1]] = self[[end_pos[0], 0]]
+      self[start] = Piece.new
+      self[[end_pos[0], 0]] = Piece.new
+    elsif end_pos[1] - start[1] == 2
+      self[end_pos] = self[start]
+      self[[end_pos[0], end_pos[1]-1]] = self[[end_pos[0], 7]]
+      self[start] = Piece.new
+      self[[end_pos[0], 7]] = Piece.new
+    end
   end
 
   def [](pos)

@@ -1,13 +1,14 @@
+#!/usr/bin/env ruby
+
 require_relative 'display'
 
 class Game
-  attr_accessor :color, :display, :error_message
+  attr_accessor :display, :error_message
   attr_reader :board, :players
 
   def initialize(players)
     @board = Board.new
     @display = Display.new(@board)
-    @color = :white
     @players = players.shuffle
     @players[0].color = :white
     @players[1].color = :black
@@ -18,6 +19,7 @@ class Game
   def play
     until @board.checkmate?(@current_player.color)
       @error_message = ''
+      @error_message ='You are in check!' if @board.in_check?(@current_player.color)
       begin
         @display.render
         puts @error_message
@@ -28,8 +30,9 @@ class Game
       end
       switch!
     end
+    switch!
     @display.render
-    puts "Game over!"
+    puts "Game over! #{@current_player.name} is the winner!!"
   end
 
   def switch!
@@ -39,6 +42,7 @@ end
 
 class HumanPlayer
   attr_accessor :color
+  attr_reader :name
 
   def initialize(name = "Mingshuo")
     @name = name

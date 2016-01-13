@@ -22,6 +22,11 @@ class Piece
     self.class.new(color = @color, position = @position, board = new_board)
   end
 
+  def occupied?(pos)
+    return true unless board[pos].color.nil?
+    false
+  end
+
   def to_s
     '    '
   end
