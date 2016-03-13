@@ -4,9 +4,9 @@ The application is a game implement by Ruby.
 
 The following command can start the game in terminal.
 
-$git clone https://github.com/wsmars/Chess-Ruby.git
-$cd Chess-Ruby
-$ruby game.rb
+####$git clone https://github.com/wsmars/Chess-Ruby.git
+####$cd Chess-Ruby
+####$ruby game.rb
 
 ## How to play
 -Select the piece using 'enter' button on keyboard.
