@@ -11,7 +11,7 @@ $ruby game.rb
 ```
 
 ## How to play
--Select the piece using 'enter' button on keyboard.
--The yellow entry(entries) is(are) available moving.
--Up, down, left, right arrows to move cursor.
--Press 'enter' again to move piece.
+- Select the piece using 'enter' button on keyboard.
+- The yellow entry(entries) is(are) available moving.
+- Up, down, left, right arrows to move cursor.
+- Press 'enter' again to move piece.
